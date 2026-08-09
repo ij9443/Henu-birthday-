@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday HENUU ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: #4a4a4a;
+        }
+        .card-container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            margin: 20px 0;
+        }
+        .screen { display: none; animation: fadeIn 0.8s ease-in-out forwards; }
+        .screen.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: #d63384; margin-bottom: 15px; }
+        h2 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #e83e8c; margin-bottom: 10px; }
+        p { font-size: 1.1rem; line-height: 1.6; color: #555; margin-bottom: 20px; }
+        .btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white; border: none; padding: 14px 32px; font-size: 1.1rem;
+            font-weight: 600; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3); transition: all 0.3s ease;
+        }
+        .btn:hover { transform: translateY(-3px) scale(1.02); }
+        .heart-badge { font-size: 4rem; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+        .decorations { font-size: 2rem; margin-bottom: 10px; }
+        .cake-wrapper { position: relative; margin: 25px auto; width: 160px; height: 140px; }
+        .cake { position: absolute; bottom: 0; width: 160px; height: 90px; background: #f472b6; border-radius: 12px 12px 0 0; box-shadow: inset 0 -10px 0 #db2777; }
+        .cake::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 30px; background: #fff; border-radius: 12px 12px 15px 15px; }
+        .candle { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 14px; height: 35px; background: repeating-linear-gradient(45deg, #fbbf24, #fbbf24 5px, #f59e0b 5px, #f59e0b 10px); border-radius: 3px; }
+        .flame { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 14px; height: 20px; background: #ff9800; border-radius: 50% 50% 20% 20%; box-shadow: 0 0 15px #ff5722; animation: flicker 0.6s infinite alternate; }
+        .flame.out { display: none; }
+        @keyframes flicker { 0% { transform: translateX(-50%) scale(1); opacity: 0.9; } 100% { transform: translateX(-50%) scale(1.15); opacity: 1; } }
+        .gif-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+        .gif-container img { width: 100px; height: 100px; border-radius: 15px; object-fit: cover; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin: 20px 0; }
+        .polaroid { background: white; padding: 8px 8px 18px 8px; border-radius: 8px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); transform: rotate(-2deg); }
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .polaroid img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; }
+        .polaroid span { font-family: 'Dancing Script', cursive; font-size: 1.1rem; color: #d63384; display: block; margin-top: 6px; }
+        .envelope-wrapper { cursor: pointer; margin: 30px auto 10px; width: 120px; height: 80px; background: #ff758c; border-radius: 8px; position: relative; display: flex; justify-content: center; align-items: center; }
+        .envelope-icon { font-size: 3rem; color: white; }
+        .letter-modal { display: none; background: #fff; border-radius: 16px; padding: 25px; border: 2px dashed #f472b6; margin-top: 20px; text-align: left; animation: slideUp 0.6s ease forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .letter-modal h3 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #d63384; margin-bottom: 10px; }
+        .letter-modal p { font-size: 0.98rem; color: #444; white-space: pre-line; }
+    </style>
+</head>
+<body>
+
+    <!-- Updated with your exact uploaded song names -->
+    <audio id="softMusic" loop src="soft_song.mp3"></audio>
+    <audio id="birthdaySong" loop src="birthday_song.mp3"></audio>
+
+    <div class="card-container">
+        <!-- Screen 1 -->
+        <div id="screen1" class="screen active">
+            <div class="heart-badge">💖</div>
+            <h1>Hey HENUU ❤️</h1>
+            <p>I have prepared a small birthday surprise just for you. Ready to explore?</p>
+            <button class="btn" onclick="startSurprise()">Tap to Enter 🎵</button>
+        </div>
+
+        <!-- Screen 2 -->
+        <div id="screen2" class="screen">
+            <div class="decorations">🎈 🎂 ✨ 🎈</div>
+            <h2>Make a Wish!</h2>
+            <p>Blow out the candles in 3.. 2.. 1..</p>
+            <div class="cake-wrapper">
+                <div class="candle"><div id="flame" class="flame"></div></div>
+                <div class="cake"></div>
+            </div>
+            <button class="btn" onclick="blowCandle()">Blow Candle 🕯️</button>
+        </div>
+
+        <!-- Screen 3 -->
+        <div id="screen3" class="screen">
+            <h1>Happy Birthday HENUU! 🎉</h1>
+            <p>May your day be filled with endless smiles, sweet moments, and joy!</p>
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnFlc2p4a3R2NXRhbmR4MnJ1ZWdld3cydjNudXlhNXFiM2MyeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LpwBwf07ucZuvW6PXk/giphy.gif" alt="Cat">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnptbjRwdXU4MnpxbXoxejNodXlpbmlzeTliMndjM2t2dWR6dzFkbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/g5R9oncTOKs3B3KwbV/giphy.gif" alt="Bear">
+            </div>
+            <button class="btn" onclick="goToGallery()">See Our Memories 📸</button>
+        </div>
+
+        <!-- Screen 4: Updated with your exact uploaded image file names -->
+        <div id="screen4" class="screen">
+            <h2>Memories Together ❤️</h2>
+            <div class="gallery-grid">
+                <div class="polaroid"><img src="IMG_20260202-WA0009.jpg" alt="1"><span>Cute Moment</span></div>
+                <div class="polaroid"><img src="IMG_20250810_225131_0187.jpg" alt="2"><span>Best Smile</span></div>
+                <div class="polaroid"><img src="IMG_20250923_163230_0831.jpg" alt="3"><span>Together ❤️</span></div>
+                <div class="polaroid"><img src="IMG_20251023_122754_0030.jpg" alt="4"><span>Special Day</span></div>
+                <div class="polaroid"><img src="Screenshot_2026-01-27-22-04-39-75_40deb401b9ffe8e1df2f1cc5ba480b12.jpg" alt="5"><span>My Favorite</span></div>
+                <div class="polaroid"><img src="Screenshot_2026-03-31-23-35-08-30_40deb401b9ffe8e1df2f1cc5ba480b12.jpg" alt="6"><span>Sweet Memory</span></div>
+            </div>
+            <button class="btn" onclick="goToLetter()">One Final Surprise ✉️</button>
+        </div>
+
+        <!-- Screen 5 -->
+        <div id="screen5" class="screen">
+            <h2>A Letter For You 💌</h2>
+            <div class="envelope-wrapper" onclick="openLetter()">
+                <div class="envelope-icon">✉️</div>
+            </div>
+            <div id="letterModal" class="letter-modal">
+                <h3>Dearest HENUU,</h3>
+                <p>
+                    Wishing you the happiest birthday ever! 🎂✨
+
+                    You bring so much warmth, laughter, and joy into my life. On your special day, I just want to remind you how amazing you truly are. May this year bring you all the love, success, and happiness that you deserve.
+
+                    Thank you for being you! ❤️
+                    Happy Birthday my love!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+        function startSurprise() {
+            document.getElementById('softMusic').play().catch(e => console.log(e));
+            showScreen('screen2');
+        }
+        function blowCandle() {
+            document.getElementById('flame').classList.add('out');
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            setTimeout(function() {
+                document.getElementById('softMusic').pause();
+                document.getElementById('birthdaySong').play().catch(e => console.log(e));
+                showScreen('screen3');
+            }, 1200);
+        }
+        function goToGallery() { showScreen('screen4'); }
+        function goToLetter() { showScreen('screen5'); }
+        function openLetter() {
+            document.getElementById('letterModal').style.display = 'block';
+            confetti({ particleCount: 80, spread: 100, origin: { y: 0.8 } });
+        }
+    </script>
+</body>
+</html>
