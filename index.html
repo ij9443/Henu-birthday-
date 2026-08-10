@@ -70,7 +70,11 @@
         /* Gallery Formatting Fix */
         .gallery-grid { display: flex; flex-direction: column; gap: 20px; margin: 20px 0; }
         .polaroid { background: white; padding: 12px; border-radius: 12px; box-shadow: 0 8px 18px rgba(0,0,0,0.1); }
-        .polaroid img { width: 100%; height: auto; max-height: 420px; object-fit: contain; border-radius: 8px; display: block; }
+        .polaroid img { width: 100%; height: auto; max-height: 420px; object-fit: contain; border-radius: 8px; display: block; margin: 0 auto; }
+        
+        /* Fix for upside down photo */
+        .rotate-fix { transform: rotate(180deg); }
+        
         .polaroid span { font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #d63384; display: block; margin-top: 10px; }
 
         /* Animated Letter Section */
@@ -95,7 +99,7 @@
         
         <!-- Screen 1: Welcome -->
         <div id="screen1" class="screen active">
-            <div style="font-size: 4rem;" class="pulse">💖</div>
+            <div style="font-size: 4rem;">💖</div>
             <h1>Hey HENUU ❤️</h1>
             <p>I have created a special surprise journey for you. Tap below to start!</p>
             <button class="btn" onclick="startSurprise()">Tap to Enter 🎵</button>
@@ -136,28 +140,29 @@
         <div id="screen5" class="screen">
             <h2>Your Sweet Moments ✨</h2>
             <div class="gallery-grid">
+                <!-- Photo 1 Rotated Correctly + Extension Fallbacks -->
                 <div class="polaroid">
-                    <img src="IMG_20260202-WA0009.jpg" onerror="this.src='IMG_20260202-WA0009.JPG'" alt="Photo 1">
+                    <img class="rotate-fix" src="IMG_20260202-WA0009.jpg" onerror="this.onerror=null; this.src='IMG_20260202-WA0009.JPG';" alt="Photo 1">
                     <span>Cute Smile 💕</span>
                 </div>
                 <div class="polaroid">
-                    <img src="IMG_20250810_225131_0187.jpg" alt="Photo 2">
+                    <img src="IMG_20250810_225131_0187.jpg" onerror="this.onerror=null; this.src='IMG_20250810_225131_0187.JPG';" alt="Photo 2">
                     <span>So Pretty ✨</span>
                 </div>
                 <div class="polaroid">
-                    <img src="IMG_20250923_163230_0831.jpg" alt="Photo 3">
+                    <img src="IMG_20250923_163230_0831.jpg" onerror="this.onerror=null; this.src='IMG_20250923_163230_0831.JPG';" alt="Photo 3">
                     <span>Angel Face 💖</span>
                 </div>
                 <div class="polaroid">
-                    <img src="IMG_20251023_122754_0030.jpg" alt="Photo 4">
+                    <img src="IMG_20251023_122754_0030.jpg" onerror="this.onerror=null; this.src='IMG_20251023_122754_0030.JPG';" alt="Photo 4">
                     <span>My Favorite View 🌸</span>
                 </div>
                 <div class="polaroid">
-                    <img src="Screenshot_2026-01-27-22-04-39-75_40deb401b9ffe8e1df2f1cc5ba480b12.jpg" onerror="this.src='Screenshot_2026-01-27-22-04-39-75_40deb401b9ffe8e1df2f1cc5ba480b12.png'" alt="Photo 5">
+                    <img src="Screenshot_2026-01-27-22-04-39-75_40deb401b9ffe8e1df2f1cc5ba480b12.jpg" onerror="this.onerror=null; this.src='Screenshot_2026-01-27-22-04-39-75_40deb401b9ffe8e1df2f1cc5ba480b12.png';" alt="Photo 5">
                     <span>Precious Moment ❤️</span>
                 </div>
                 <div class="polaroid">
-                    <img src="Screenshot_2026-03-31-23-35-08-30_40deb401b9ffe8e1df2f1cc5ba480b12.jpg" onerror="this.src='Screenshot_2026-03-31-23-35-08-30_40deb401b9ffe8e1df2f1cc5ba480b12.png'" alt="Photo 6">
+                    <img src="Screenshot_2026-03-31-23-35-08-30_40deb401b9ffe8e1df2f1cc5ba480b12.jpg" onerror="this.onerror=null; this.src='Screenshot_2026-03-31-23-35-08-30_40deb401b9ffe8e1df2f1cc5ba480b12.png';" alt="Photo 6">
                     <span>Princess Vibes 👑</span>
                 </div>
             </div>
@@ -197,7 +202,7 @@ Or pta hai tu na bohot strong hai pgl dhak tune 1 sal or nekal liya bs usse terh
 And once again happy birthday my baccha ❤️
 Dhak mujhe na word se emotions jta na ni aata lakin mere try kiya kuch glat Iga ho to maf kr dena or haaa sat me tujhe aane wale saloo me or pareshan karunga is bat ki garanty hai aak dam hole sale ke bhow mee 😁💃
 
-Lomuuuuuuuuuuuu Bohot bohot bohot bohot bohot sara meri pyari princess ❤️
+Lomuuuuuuuuuuuu Bohot bohot bohot bohot sara meri pyari princess ❤️
 smaj aaya soo bee ready orr orrr...
 
 Be happy, be healthy, be strong and ALSO BEEE MINEE! 💖
@@ -225,7 +230,6 @@ Be happy, be healthy, be strong and ALSO BEEE MINEE! 💖
         /* Game 1: Catch Falling Hearts */
         let catchCount = 0;
         let basketPos = 40;
-        let catchInterval;
 
         function moveBasketByTouch(e) {
             let rect = document.getElementById('catchGameArea').getBoundingClientRect();
